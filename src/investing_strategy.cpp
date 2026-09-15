@@ -2,7 +2,7 @@
 #include "L1Tick.h"
 #include <cstdint>
 
-InvestingStrategy::InvestingStrategy(const L1Tick* ticks) { this->ticks = ticks; }
+InvestingStrategy::InvestingStrategy(const L1Tick* ticks, uint64_t slow_period, uint64_t fast_period) { this->ticks = ticks; SLOW_PERIOD = slow_period; FAST_PERIOD = fast_period; }
 
 uint64_t InvestingStrategy::get_number_of_ticks() const { return number_of_ticks; }
 
@@ -25,7 +25,6 @@ void InvestingStrategy::invest(const L1Tick& tick) {
     double fast_avg = this->fast_sum / (FAST_PERIOD - 1);
     double slow_avg = this->slow_sum / (SLOW_PERIOD - 1);
 
-    // std::cout<<"FAST AVG: " << fast_avg << " -------- SLOW AVG: " << slow_avg << '\n';
     if ( fast_avg > slow_avg && !this->currently_holding){
         this->buying_price = tick.price;
         currently_holding = true;
